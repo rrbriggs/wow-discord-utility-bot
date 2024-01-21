@@ -21,14 +21,8 @@ def get_mythic_plus_info(request):
     access_token = access_token_response.json().get('access_token')
     logger.info(f"bnet access token: {access_token}")
     guild_roster_response = get_guild_roster(access_token=access_token, guild_slug='sleepless-kingdom')
-    guild_roster_json = guild_roster_response.json()
-    members = guild_roster_json.get('members', [])
 
-    #TODO: {guild_ranks_to_consider} will need to be moved to get stored in the DB, and get set by the user on startup
-    #TODO: also this needs to be able to be modified if the guild ranks are changed, or the user messed up
-    guild_ranks_to_consider = [0, 1, 2, 3]
-    selected_members = [member for member in members if member.get('rank') in guild_ranks_to_consider]
-    pprint(selected_members)
+    members = get_members_by_rank(guild_roster_response.json())
 
 def create_access_token():
     data = { 'grant_type': 'client_credentials' }
@@ -46,3 +40,14 @@ def get_guild_roster(access_token: str, guild_slug: str, server_slug: str = 'are
     print(url)
     response = requests.get(f'https://us.api.blizzard.com/data/wow/guild/{server_slug}/{guild_slug}/roster', params=params)
     return response
+
+def get_members_by_rank(guild_roster_json: json):
+    members = guild_roster_json.get('members', [])
+
+    #TODO: {guild_ranks_to_consider} will need to be moved to get stored in the DB, and get set by the user on startup
+    #TODO: also this needs to be able to be modified if the guild ranks are changed, or the user messed up
+    guild_ranks_to_consider = [0, 1, 2, 3]
+    selected_members = [member for member in members if member.get('rank') in guild_ranks_to_consider]
+    pprint(selected_members)
+
+    return selected_members
