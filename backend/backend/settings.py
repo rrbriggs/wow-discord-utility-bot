@@ -39,7 +39,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "/path/to/django/debug.log",
+            "filename": "./debug.log",
         },
     },
     "root": {
@@ -52,6 +52,11 @@ LOGGING = {
             "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
             "propagate": True,
         },
+        "wowbot": {
+            "handlers": ["console", "file"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": True,
+        }
     },
 }
 

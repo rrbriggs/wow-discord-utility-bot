@@ -1,23 +1,34 @@
 from ninja import NinjaAPI
 from config import BATTLENET_SECRET_KEY, BATTLENET_ID
 from django.http import JsonResponse
-import requests
+import json
 import logging
+from pprint import pprint
+import requests
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger("wow-bot")
 
 api = NinjaAPI()
 
 @api.get("/mythic")
 def get_mythic_plus_info(request):
-    access_token_request = create_access_token()
-    if access_token_request.status_code != 200:
-        logger.warn(f"bnet access token request failed: {access_token_request}")
+    access_token_response = create_access_token()
+    if access_token_response.status_code != 200:
+        logger.warn(f"bnet access token request failed: {access_token_response}")
         return JsonResponse({'error': 'Failed to fetch data'}, status=500)
 
-    access_token = access_token_request.json().get('access_token')
+    access_token = access_token_response.json().get('access_token')
     logger.info(f"bnet access token: {access_token}")
-    guild_roster = get_guild_roster(access_token=access_token, guild_slug='sleepless-kingdom')
+    guild_roster_response = get_guild_roster(access_token=access_token, guild_slug='sleepless-kingdom')
+    guild_roster_json = guild_roster_response.json()
+    members = guild_roster_json.get('members', [])
+
+    #TODO: {guild_ranks_to_consider} will need to be moved to get stored in the DB, and get set by the user on startup
+    #TODO: also this needs to be able to be modified if the guild ranks are changed, or the user messed up
+    guild_ranks_to_consider = [0, 1, 2, 3]
+    selected_members = [member for member in members if member.get('rank') in guild_ranks_to_consider]
+    pprint(selected_members)
 
 def create_access_token():
     data = { 'grant_type': 'client_credentials' }
