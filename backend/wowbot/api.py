@@ -19,4 +19,5 @@ def get_mythic_plus_info(request):
     guild_roster_response = get_guild_roster(access_token=access_token, guild_slug='sleepless-kingdom')
 
     members = get_members_by_rank(guild_roster_response.json())
+    
 

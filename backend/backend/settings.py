@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from config import SETTINGS_SECRET_KEY, SETTINGS_DEBUG
+from config import SETTINGS_SECRET_KEY, SETTINGS_DEBUG, DB_ROOT_PASSWORD, DB_ROOT_USER
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -107,10 +107,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# TODO: likely remove this, just leftover from og install
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'wowapp',
+        'USER': DB_ROOT_USER,
+        'PASSWORD': DB_ROOT_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
