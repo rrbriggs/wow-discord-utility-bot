@@ -1,6 +1,7 @@
 from ninja import NinjaAPI
 from django.http import JsonResponse
 from wowbot.blizzard_api_service import create_access_token, get_guild_roster, get_members_by_rank
+from wowbot.guild_character_repo import add_or_update_characters
 import logging
 
 logger = logging.getLogger("wow-bot")
@@ -20,4 +21,4 @@ def get_mythic_plus_info(request):
 
     members = get_members_by_rank(guild_roster_response.json())
     
-
+    add_or_update_characters(members)

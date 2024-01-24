@@ -1,10 +1,10 @@
 from django.db import models
 
 #Character from bliz api Guild Roster
-class Character(models.Model):
+class Characters(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     key_href = models.URLField()
-    level = models.IntegerField()
+    level = models.IntegerField(blank=True)
     name = models.CharField(max_length=100, db_index=True)
     
     playable_class_id = models.IntegerField()
