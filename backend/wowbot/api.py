@@ -1,6 +1,5 @@
 from ninja import NinjaAPI
-from django.http import JsonResponse
-from wowbot.blizzard_api_service import create_access_token, get_guild_roster, get_members_by_rank
+from wowbot.blizzard_api_service import get_guild_roster, get_members_by_rank
 from wowbot.guild_character_repo import add_or_update_characters
 import logging
 
@@ -9,16 +8,14 @@ logger = logging.getLogger("wow-bot")
 api = NinjaAPI()
 
 @api.get("/mythic")
-def get_mythic_plus_info(request):
-    access_token_response = create_access_token()
-    if access_token_response.status_code != 200:
-        logger.warn(f"bnet access token request failed: {access_token_response}")
-        return JsonResponse({'error': 'Failed to fetch data'}, status=500)
+def get_mythic_plus_info(request, guild_name: str):
+    transformed_guild_name = guild_name.strip().lower()
 
-    access_token = access_token_response.json().get('access_token')
-    logger.info(f"bnet access token: {access_token}")
-    guild_roster_response = get_guild_roster(access_token=access_token, guild_slug='sleepless-kingdom')
+    # TODO: add token to get_guild_roster()
+    guild_roster_response = get_guild_roster(guild_slug=transformed_guild_name)
 
     members = get_members_by_rank(guild_roster_response.json())
     
     add_or_update_characters(members)
+
+    

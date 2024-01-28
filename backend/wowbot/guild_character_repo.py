@@ -1,5 +1,4 @@
 from wowbot.models import Characters
-from django.db import IntegrityError
 import logging
 
 logger = logging.getLogger("wow-bot")
