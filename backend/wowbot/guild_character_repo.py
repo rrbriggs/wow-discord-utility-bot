@@ -4,6 +4,7 @@ import logging
 logger = logging.getLogger("wow-bot")
 
 def add_or_update_characters(members: list):
+    ranked_members = set()
     for member_data in members:
         member_info = member_data['character']
         member_rank = member_data['rank']
@@ -32,10 +33,12 @@ def add_or_update_characters(members: list):
             )
             if created:
                 logger.info(f"Created character with name and id of: {character.name} - {character.id}")
+                ranked_members.add(character)
             else:
                 logger.info(f"Character: {character.name} - {character.id} already existed, attempted to update")
         except Exception as err:
             logger.info(f"Something bad happened while trying to update_or_create for this character: {member_info['name']} - {member_info['id']}")
+    return ranked_members
 
         
 

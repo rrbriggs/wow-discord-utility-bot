@@ -34,8 +34,6 @@ def get_guild_roster(guild_slug: str, server_slug: str = 'area-52', region: str 
         'locale': locale,
         'access_token': token,
         }
-    url = f'https://us.api.blizzard.com/data/wow/guild/{server_slug}/{guild_slug}/roster'
-    print(url)
     response = requests.get(f'https://us.api.blizzard.com/data/wow/guild/{server_slug}/{guild_slug}/roster', params=params)
     return response
 

@@ -30,3 +30,10 @@ class BnetTokens(models.Model):
 
     def __str__(self):
         return self.token
+
+class CharacterDungeons(models.Model):
+    player_id = models.IntegerField(unique=True, primary_key=True)
+    name = models.CharField(max_length=100)
+    realm_slug = models.CharField(max_length=100)
+    mplus_rating = models.FloatField()
+    
