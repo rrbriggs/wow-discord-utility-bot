@@ -36,4 +36,10 @@ class CharacterDungeons(models.Model):
     name = models.CharField(max_length=100)
     realm_slug = models.CharField(max_length=100)
     mplus_rating = models.FloatField()
+    affixes = models.JSONField(null=True, blank=True)
+    best_runs = models.JSONField(null=True, blank=True)
+    previous_best = models.JSONField(null=True, blank=True)
     
+class DungeonIdAssociation(models.Model):
+    id = models.IntegerField(unique=True, primary_key=True)
+    name = models.CharField(max_length=100)
