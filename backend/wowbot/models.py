@@ -39,7 +39,13 @@ class CharacterDungeons(models.Model):
     affixes = models.JSONField(null=True, blank=True)
     best_runs = models.JSONField(null=True, blank=True)
     previous_best = models.JSONField(null=True, blank=True)
+
+    def __str__(self):
+        return self.player_id
     
 class DungeonIdAssociation(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.id
